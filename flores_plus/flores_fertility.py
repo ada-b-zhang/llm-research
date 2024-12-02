@@ -2,6 +2,13 @@ from transformers import AutoTokenizer
 from datasets import load_dataset
 from joblib import Parallel, delayed
 import pandas as pd
+import time
+
+start_time = time.time()
+
+# Model for tokenization
+model = "bigscience/mt0-xxl-mt" # Replace with desired model/tokenier
+name_for_csv = 'mt0' # For lines 66 and 67
 
 # Load FLORES dataset and convert to Pandas DataFrame
 flores_plus_dev = load_dataset("openlanguagedata/flores_plus", split='dev').to_pandas()
@@ -39,7 +46,7 @@ def parallel_fertility_batches(texts, tokenizer, batch_size=32, n_jobs=-1):
 # Main function
 def main():
     # Load tokenizer
-    tokenizer = AutoTokenizer.from_pretrained('meta-llama/Llama-3.2-1B-Instruct')
+    tokenizer = AutoTokenizer.from_pretrained(model)
     
     # Clean and prepare text and ID data
     ids = flores_plus_dev['id'].tolist()
@@ -56,8 +63,11 @@ def main():
         'fertility_score': fertility_scores,
         'tokens': tokenized_texts  # Keep tokens as a list
     })
-    output_df.to_csv("results.csv", index=False)
-    print("Results saved to 'results.csv'")
+    output_df.to_csv(f"flores_fertilized_and_tokenized_with_{name_for_csv}.csv", index=False)
+    print(f"Results saved to 'flores_fertilized_and_tokenized_with_{name_for_csv}.csv'")
 
 if __name__ == "__main__":
     main()
+
+end_time = time.time()
+print(f"Runtime: {end_time-start_time} seconds")
