@@ -5,7 +5,12 @@
 
 ## tokenization.ipynb
 - Notebook to explore different tokenizers
-- Example dataset from Kaggle provided, but you can upload any text dataset 
+- Example dataset from Kaggle provided, but you can upload any text dataset
+
+## flores_plus
+- script to calculate fertility scores for FLORES+ dataset
+- 
+
 
 ## Resources
 @inproceedings{zhao2019moverscore,
