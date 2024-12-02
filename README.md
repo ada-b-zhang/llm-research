@@ -8,8 +8,7 @@
 - Example dataset from Kaggle provided, but you can upload any text dataset
 
 ## flores_plus
-Folder that contains script to calculate fertility scores for Meta's FLORES+ dataset
-[Link to FLORES+](https://huggingface.co/datasets/openlanguagedata/flores_plus)
+Folder that contains script to calculate fertility scores for Meta's [FLORES+ dataset](https://huggingface.co/datasets/openlanguagedata/flores_plus)
 
 How to use:
 1. Download `flores_fertility.py`
@@ -24,9 +23,7 @@ How to use:
 4. The .csv file with the results will be in the current working directory
 
 ## AfriMMLU
-Folder that contains script to calculate fertility scores for AfriMMLU dataset
-[Link to AfriMMLU]([https://huggingface.co/datasets/openlanguagedata/flores_plus](https://huggingface.co/datasets/masakhane/afrimmlu))
-
+Folder that contains script to calculate fertility scores for [AfriMMLU dataset](https://huggingface.co/datasets/masakhane/afrimmlu)
 
 
 ## Resources
