@@ -1,11 +1,7 @@
-## MoverScore
-1. [Clone the original repository](https://github.com/AIPHES/emnlp19-moverscore.git) ```git clone https://github.com/AIPHES/emnlp19-moverscore.git```
-2. Add `moverscore/exploring_moverscore.ipynb` from this repo to the cloned repo
-3. Replace `moverscore/moverscore_v2.py` in cloned repo with `moverscore_v2.py` from this repo
-
 ## tokenization.ipynb
 - Notebook to explore different tokenizers
 - Example dataset from Kaggle provided, but you can upload any text dataset
+
 
 ## flores_plus
 Folder that contains script to calculate fertility scores for Meta's [FLORES+ dataset](https://huggingface.co/datasets/openlanguagedata/flores_plus)
@@ -22,11 +18,15 @@ How to use:
    ```
 4. The .csv file with the results will be in the current working directory
 
+
 ## AfriMMLU
 Folder that contains script to calculate fertility scores for [AfriMMLU dataset](https://huggingface.co/datasets/masakhane/afrimmlu)
 
 
-## Resources
+## MoverScore
+1. [Clone the original repository](https://github.com/AIPHES/emnlp19-moverscore.git) ```git clone https://github.com/AIPHES/emnlp19-moverscore.git```
+2. Add `moverscore/exploring_moverscore.ipynb` from this repo to the cloned repo
+3. Replace `moverscore/moverscore_v2.py` in cloned repo with `moverscore_v2.py` from this repo
 @inproceedings{zhao2019moverscore,
   title = {MoverScore: Text Generation Evaluating with Contextualized Embeddings and Earth Mover Distance},
   month = {August},
