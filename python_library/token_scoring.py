@@ -54,7 +54,7 @@ def get_fertilities(data,
                                where both columns are string-type. 
         - tokenizer (tokenizer): model/tokenizer 
           (optional, defaults to `meta-llama/Llama-3.2-1B-Instruct`)
-        - visualize (bool): if `True`, provides histogram of 
+        - visualize (bool): if `True`, provides side-by-side boxplots of fertilities by language
 
     Returns
     -------
