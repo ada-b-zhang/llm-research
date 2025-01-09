@@ -12,7 +12,6 @@ Functions
 ---------
     - `fertility`
     - `get_fertilities`
-    - 
 
 """ 
 
@@ -42,8 +41,7 @@ def fertility(text, tokenizer=AutoTokenizer.from_pretrained('meta-llama/Llama-3.
 
 def get_fertilities(data, 
                     tokenizer=AutoTokenizer.from_pretrained('meta-llama/Llama-3.2-1B-Instruct'), 
-                    visualize=False, 
-                    measure='average'):
+                    visualize=False):
     """ 
     Get fertility scores and tokens for a dataset of texts in different languages. 
     
@@ -73,7 +71,6 @@ def get_fertilities(data,
     scored = data.copy()
     scored['fertility'] = pd.Series(fertility_scores)
     scored['tokens'] = pd.Series(tokens)
-
 
     if visualize==True:
         languages = list(scored['language'].unique())
