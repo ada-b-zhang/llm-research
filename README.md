@@ -7,3 +7,13 @@ Calculate fertility and parity scores for Meta's [FLORES+ dataset](https://huggi
 
 ## AfriMMLU
 Folder that contains script to calculate fertility scores for [AfriMMLU dataset](https://huggingface.co/datasets/masakhane/afrimmlu).
+
+## python_library
+Library for calculating token metrics. 
+
+How to use:
+```
+folder_path = '../../python_library' # path to `python_library`
+sys.path.append(os.path.abspath(folder_path))
+from token_scoring import *
+```
