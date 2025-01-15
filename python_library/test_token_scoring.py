@@ -7,26 +7,26 @@ import numpy as np
 from token_scoring import *
 
 
-def test_fertility_valid_text():
+def test_token_score():
     text = 'This is a sentence for testing.'
     expected_tokens = ['This', 'Ġis', 'Ġa', 'Ġsentence', 'Ġfor', 'Ġtesting', '.']
 
-    fertility_score, tokenized = fertility(text)
-    expected_fertility = len(tokenized) / len(text.split())
+    score, tokenized = token_score(text)
+    expected_score = len(tokenized) / len(text.split())
 
     assert expected_tokens == tokenized
-    assert fertility_score == expected_fertility
+    assert score == expected_score
 
 
 def test_fertility_empty_text():
     text = "" 
     expected_tokens = []
 
-    fertility_score, tokenized = fertility(text)
-    expected_fertility = 999999
+    score, tokenized = token_score(text)
+    expected_score = 999999
 
     assert expected_tokens == tokenized 
-    assert fertility_score == expected_fertility
+    assert score == expected_score
 
 def test_flan_t5():
     texts = ["The sky is bright today.", 
@@ -58,8 +58,7 @@ def test_flan_t5():
                             [15247, 552, 338, 5051]]
     tokens = []
     for text in texts: 
-        fertility_score, tokenized = fertility(text, 
-                                               tokenizer=AutoTokenizer.from_pretrained('google/flan-t5-xxl'))
+        score, tokenized = token_score(text, tokenizer=AutoTokenizer.from_pretrained('google/flan-t5-xxl'))
         tokens.append(tokenized)
 
     assert expected_tokens==tokens
