@@ -2,8 +2,8 @@
 
 #Other
 .DS_Store
-
-
+.env
+.ipynb_checkpoints/
 
 
 
