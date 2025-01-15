@@ -8,6 +8,8 @@ Calculate fertility and parity scores for Meta's [FLORES+ dataset](https://huggi
 ## AfriMMLU
 Folder that contains script to calculate fertility scores for [AfriMMLU dataset](https://huggingface.co/datasets/masakhane/afrimmlu).
 
+See results for llama [here](https://github.com/Hamza-Louzan/Llama_Fertility/tree/main)
+
 ## python_library
 Library for calculating token metrics. 
 
@@ -19,3 +21,5 @@ from token_scoring import *
 ```
 
 Also see [tokenmetrics repository](https://github.com/ada-b-zhang/tokenmetrics)
+
+
