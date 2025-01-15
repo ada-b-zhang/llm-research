@@ -10,17 +10,17 @@ The default model is `meta-llama/Llama-3.2-1B-Instruct`.
 
 Functions
 ---------
-    - `fertility`
+    - `token_score`
     - `get_fertilities`
+    - `get_parities`
 
-""" 
+"""
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-# Fertility 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def fertility(text, tokenizer=AutoTokenizer.from_pretrained('meta-llama/Llama-3.2-1B-Instruct')):
+def token_score(text, 
+                tokenizer=AutoTokenizer.from_pretrained('meta-llama/Llama-3.2-1B-Instruct')):
     """ 
-    Get the fertility score and tokens for a given text.
+    Get the fertility/parity score and tokens for a given text. This is a helper function
+    for `get_fertilities` and `get_parities`
 
     Parameters
     ----------
@@ -30,15 +30,18 @@ def fertility(text, tokenizer=AutoTokenizer.from_pretrained('meta-llama/Llama-3.
 
     Returns
     -------
-        - fertility (float): fertility score
+        - parity (float): parity score
         - tokenized (list): list of tokens 
     """ 
-    tokenized = tokenizer.tokenize(text) 
+    tokens = tokenizer.tokenize(text) 
     num_words = len(text.split())
 
-    fertility = len(tokenized) / num_words if num_words > 0 else 999999 
-    return fertility, tokenized
+    score = len(tokens) / num_words if num_words > 0 else 999999 
+    return score, tokens
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+# Fertility 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def get_fertilities(data, 
                     tokenizer=AutoTokenizer.from_pretrained('meta-llama/Llama-3.2-1B-Instruct'), 
                     visualize=False):
@@ -56,32 +59,80 @@ def get_fertilities(data,
 
     Returns
     -------
-        - scored (pd.DataFrame): DataFrame with `fertility` and `tokens` columns added to `data`
-
+        - scored (pd.DataFrame): DataFrame with `language`, `corpus`, `fertility`, and `tokens` columns
     
     """
-    fertility_scores = []
+
+    languages = list(data['language'].unique())
+    language_corpora = {} # {'language1':'text1', 'language2', 'text2', etc.}
+    fertility_scores = {} # {'language1':'score1', 'language2', 'score2', etc.}
+    tokens = {} # {'language1':'tokens1', 'language2', 'tokens2', etc.}
+
+    for language in languages:
+        text = data[data['language'] == language]['text']
+        corpus = " ".join(text)
+
+        fertility_score, tokenized = token_score(corpus, tokenizer)
+
+        language_corpora[language] = corpus
+        fertility_scores[language] = fertility_score
+        tokens[language] = tokenized
+
+    scored = pd.DataFrame({'language': pd.Series(languages),
+                           'corpus': pd.Series(language_corpora.values()),
+                           'fertility': pd.Series(fertility_scores.values()),
+                           'tokens': pd.Series(tokens.values())})
+    
+    # if visualize==True:                                               # for later
+    
+    return scored 
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
+# Parity 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def get_parities(data, 
+                 tokenizer=AutoTokenizer.from_pretrained('meta-llama/Llama-3.2-1B-Instruct'), 
+                 visualize=False):
+    """ 
+    Get parity scores and tokens for a dataset of texts in different languages. 
+    
+    Parameters
+    ----------
+        - data (pd.DataFrame): Dataset of texts for tokenization
+                               Must contain `language` and `text` columns, 
+                               where both columns are string-type. 
+        - tokenizer (tokenizer): model/tokenizer 
+          (optional, defaults to `meta-llama/Llama-3.2-1B-Instruct`)
+        - visualize (bool): if `True`, provides side-by-side boxplots of parities by language
+
+    Returns
+    -------
+        - scored (pd.DataFrame): DataFrame with `parity` and `tokens` columns added to `data`
+    
+    """
+    parity_scores = []
     tokens = []
     for row_index in range(len(data)):
         text = data.loc[row_index, 'text']
-        fertility_score, tokenized = fertility(text, tokenizer)
-        fertility_scores.append(fertility_score)
+        parity_score, tokenized = token_score(text, tokenizer)
+        parity_scores.append(parity_score)
         tokens.append(tokenized)
 
     scored = data.copy()
-    scored['fertility'] = pd.Series(fertility_scores)
+    scored['parity'] = pd.Series(parity_scores)
     scored['tokens'] = pd.Series(tokens)
 
     if visualize==True:
         languages = list(scored['language'].unique())
-        fertilities_by_language = [scored[scored['language']==lang]['fertility'] for lang in languages]
+        parities_by_language = [scored[scored['language']==lang]['parity'] for lang in languages]
 
         plt.figure(figsize=(12, 6))
         boxprops = dict(facecolor='gold', color='black') 
         medianprops = dict(color='green', linewidth=2)  
 
         plt.boxplot(
-            fertilities_by_language,
+            parities_by_language,
             labels=languages,
             vert=True,
             patch_artist=True,
@@ -90,20 +141,16 @@ def get_fertilities(data,
             showfliers=True
         )
 
-        for i, data in enumerate(fertilities_by_language, start=1):
+        for i, data in enumerate(parities_by_language, start=1):
             mean = np.mean(data)
             plt.plot(i, mean, 'g*', markersize=12, label='Mean' if i == 1 else "")  
         plt.legend(loc='upper right')
 
         # plt.xticks(rotation=45, ha='right')
-        plt.title('Fertility by Language')
+        plt.title('Parity by Language')
         plt.xlabel('Language')
-        plt.ylabel('Fertility Score')
+        plt.ylabel('Parity Score')
         plt.show()
 
     return scored 
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
-# Parity 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
