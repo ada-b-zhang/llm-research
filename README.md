@@ -17,3 +17,5 @@ folder_path = '../../python_library' # path to `python_library`
 sys.path.append(os.path.abspath(folder_path))
 from token_scoring import *
 ```
+
+Also see [tokenmetrics repository](https://github.com/ada-b-zhang/tokenmetrics)
